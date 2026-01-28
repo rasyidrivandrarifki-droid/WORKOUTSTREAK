@@ -1,11 +1,10 @@
-self.addEventListener("install",e=>{
- e.waitUntil(
-  caches.open("gymstreak").then(c=>c.add("./"))
- );
-});
+function complete(){
+  let h = JSON.parse(localStorage.getItem("history") || "[]");
+  h.push(today + " — " + quest);
+  localStorage.setItem("history", JSON.stringify(h));
 
-self.addEventListener("fetch",e=>{
- e.respondWith(
-  caches.match(e.request).then(r=>r||fetch(e.request))
- );
-});
+  document.getElementById("quest").innerText = "✅ Quest hari ini selesai";
+  document.querySelector("button").innerText = "SELESAI";
+  document.querySelector("button").disabled = true;
+  document.querySelector("button").style.background = "#333";
+}
