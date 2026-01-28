@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>GymStreak</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+
+  <style>
+    body{
+      margin:0;
+      background:#000;
+      color:#fff;
+      font-family:system-ui;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+    .card{
+      width:90%;
+      max-width:360px;
+      background:#0b1220;
+      border-radius:18px;
+      padding:20px;
+    }
+    button{
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      border:none;
+      border-radius:12px;
+      background:#1e90ff;
+      color:#fff;
+      font-size:16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>GYMSTREAK</h2>
+  <p id="date"></p>
+  <p id="quest"></p>
+  <button onclick="complete()">Quest Selesai</button>
+</div>
+
+<script>
+const today=new Date().toISOString().slice(0,10);
+document.getElementById("date").innerText=today;
+
+const quests=[
+ "20 Push-up",
+ "30 Squat",
+ "1 Menit Plank",
+ "Stretch 5 Menit"
+];
+
+let qDate=localStorage.getItem("qDate");
+let quest=localStorage.getItem("quest");
+
+if(qDate!==today){
+ quest=quests[Math.floor(Math.random()*quests.length)];
+ localStorage.setItem("quest",quest);
+ localStorage.setItem("qDate",today);
+}
+
+document.getElementById("quest").innerText=quest;
+
+function complete(){
+ let h=JSON.parse(localStorage.getItem("history")||"[]");
+ h.push(today+" — "+quest);
+ localStorage.setItem("history",JSON.stringify(h));
+ alert("Quest tercatat!");
+}
+
+if("serviceWorker"in navigator){
+ navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>
